@@ -36,7 +36,7 @@ services:
    mynginx:
         image: nginx
         ports:
-          - "8080:80"
+          - "8181:80"
         volumes:
           - ./src/nginx.ini:/etc/nginx/conf.d/default.conf
           - ./src/:/var/www/html
