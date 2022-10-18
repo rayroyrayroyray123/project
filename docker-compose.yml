@@ -19,7 +19,7 @@ services:
    myphp:
         build:
           context: .
-          dockerfile: ./src/php
+          dockerfile: ./src/php/dockerfile
         depends_on:
           - mysql
           - myredis
