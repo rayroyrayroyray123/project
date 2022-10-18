@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $route['user/logout'] = 'user/logout';
 // $route['user/register'] = 'user/register';
 // $route['user/(:any)'] = 'user/view/$1';
-$route['default_controller'] = 'login';
+$route['default_controller'] = 'user';
 // $route['(:any)'] = 'pages/view/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
