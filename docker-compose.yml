@@ -25,7 +25,7 @@ services:
           - myredis
         restart: always
         volumes:
-          - ./src:/var/www/html
+          - ./src/:/var/www/html
         ports:
           - "9000"
         networks:
@@ -36,7 +36,7 @@ services:
           - "8181:80"
         volumes:
           - ./src/nginx.ini:/etc/nginx/conf.d/default.conf
-          - ./src:/var/www/html
+          - ./src/:/var/www/html
           - ./src/php-fpm.conf:/etc/php/7.4/fpm
           - ./src/www.conf:/etc/php/7.4/fpm/pool.d
         depends_on:
