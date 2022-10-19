@@ -1,68 +1,48 @@
-version: "3.3"
-
+version: '3'
 services:
-  mysql:
-    image: mariadb:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: MyDBRoot123
-      MYSQL_DATABASE: cloud_computing
-      MYSQL_USER: php
-      MYSQL_PASSWORD: php
-    networks:
-      - mynet
 
-  myredis:
-    image: redis:latest
-    networks:
-      - mynet
-
-  myphp:
-    depends_on:
-      - mysql
-      - myredis
-    build: ./src/php
+  nginx:
+    image: nginx:latest
     volumes:
-      - ./src:/var/www/html
-    privileged: true
+      - ./public:/public
+      - ./site.conf:/etc/nginx/conf.d/default.conf
+    networks: 
+      codeigniter_net:
     ports:
-      - "9000"
-    networks:
-      - mynet
+      - "8181:90"
+    restart: always
 
-  mynginx:
-    depends_on:
-      - myphp
-    image: nginx
-    ports:
-      - "8080:80"
+  php:
+    build: 
+      context: ./public
+      dockerfile: Dockerfile
     volumes:
-      - ./src:/var/www/html
-      - ./src/nginx.ini:/etc/nginx/conf.d/default.conf
-      - ./php-fpm.conf:/etc/php/7.4/fpm
-      - ./www.conf:/etc/php/7.4/fpm/pool.d
-    privileged: true
-    networks:
-      - mynet
-
-  phpMyadmin:
+      - ./public:/public
     depends_on:
-      - mysql
-    image: phpmyadmin:latest
-    environment:
-      PMA_HOST: mysql
-      PMA_ARBITRARY: 1
-    ports:
-      - "8082:80"
+      - database
     networks:
-      - mynet
+      codeigniter_net:
 
-volumes:
-  src: {}
-  nginx.ini: {}
-  php-fpm.conf: {}
-  www.conf: {}
+  database:
+    image: mysql:5.7
+    networks:
+      codeigniter_net:
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+
+  phpmyadmin:
+    depends_on:
+      - database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8282:80'
+    env_file:
+      - .env
+    networks:
+      codeigniter_net:
 
 networks:
-  mynet:
-    driver: bridge
-
+  codeigniter_net:
