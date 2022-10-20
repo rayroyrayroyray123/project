@@ -16,6 +16,7 @@
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
             <a href="<?php echo base_url(); ?>login"> Home | </a>
+            <a href="<?php echo base_url(); ?>register"> Register | </a>
             <?php if ($this->session->userdata('logged_in')){ ?>
                 <a href="<?php echo base_url(); ?>upload"> Upload | </a>
                 <a href="<?php echo base_url(); ?>Comment"> Comment | </a>

@@ -11,21 +11,22 @@ class login extends CI_Controller {
 		
 		$this->load->view('template/header');
 
-		$vals = array(
-            //'word'        => 'Random word',
-            'img_path'    => '/var/www/htdocs/book/assets/img/',
-            'img_url'    => base_url().'/assets/img/',
-            'font_path'     => '/var/www/htdocs/book/system/fonts/texb.ttf',
-            'img_width'     => '150',
-            'img_height'    => 30,
-            'expiration'    => 7200
-        );
+		// $vals = array(
+        //     //'word'        => 'Random word',
+        //     'img_path'    => 'public/assets/img',
+        //     'img_url'    => base_url().'/assets/img/',
+        //     'font_path'     => 'public/system/fonts/texb.ttf',
+        //     'img_width'     => '150',
+        //     'img_height'    => 30,
+        //     'expiration'    => 7200
+        // );
         
         
-        $cap = create_captcha($vals);
-        echo $cap['word'];
-		$user_data['captcha'] = $cap['word'];
-		$data['captcha'] = $cap['image'];
+        // $cap = create_captcha($vals);
+        // echo $cap['word'];
+		// $user_data['captcha'] = $cap['word'];
+		// $data['captcha'] = $cap['image'];
+		$user_data = array();
 		if (!$this->session->userdata('logged_in'))//check if user already login
 		{	
 			if (get_cookie('remember')) { // check if user activate the "remember me" feature  
@@ -62,16 +63,16 @@ class login extends CI_Controller {
 		$password = $this->input->post('password'); //getting password from login form
 		$encry_password = md5($password);
 		$remember = $this->input->post('remember'); //getting remember checkbox from login form
-		$captcha = $this->input->post('captcha'); //getting remember checkbox from login form
+		// $captcha = $this->input->post('captcha'); //getting remember checkbox from login form
 
-		if($captcha != $this->session->userdata('captcha')){
-			echo "Captcha incorrect";
-			// echo $captcha;
-			// echo $this->session->userdata('captcha');
-			redirect('login'); //if user already logined direct user to home page
-		}
+		// if($captcha != $this->session->userdata('captcha')){
+		// 	echo "Captcha incorrect";
+		// 	// echo $captcha;
+		// 	// echo $this->session->userdata('captcha');
+		// 	redirect('login'); //if user already logined direct user to home page
+		// }
 
-		echo $encry_password;
+		// echo $encry_password;
 		if(!$this->session->userdata('logged_in')){	//Check if user already login
 			// echo "check!";
 			if ( $this->user_model->login($username, $encry_password) )//check username and password
@@ -79,14 +80,14 @@ class login extends CI_Controller {
 				// echo "Login success";
 				$user_data = array(
 					'username' => $username,
-					'captcha' => $captcha,
+					// 'captcha' => $captcha,
 					'logged_in' => true 	//create session variable
 				);
 				if($remember) { // if remember me is activated create cookie
 					set_cookie("username", $username, '300'); //set cookie username
 					set_cookie("password", $encry_password, '300'); //set cookie password
 					set_cookie("remember", $remember, '300'); //set cookie remember
-					set_cookie("captcha", $captcha, '300');
+					// set_cookie("captcha", $captcha, '300');
 				}	
 				$this->session->set_userdata($user_data); //set user status to login in session
 				redirect('login'); // direct user home page
